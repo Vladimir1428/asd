@@ -17,7 +17,3 @@ dextoolsSocket.on('open', () => {
   console.log('Соединение с "wss://ws.dextools.io/" установлено.');
 });
 
-// Запускаем HTTP сервер на порту 3000
-server.listen(3000, () => {
-  console.log('Сервер запущен на порту 3000');
-});
