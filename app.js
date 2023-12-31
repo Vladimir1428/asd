@@ -1,38 +1,23 @@
 const WebSocket = require('ws');
-const express = require('express');
+const http = require('http');
 
-const app = express();
-const server = app.listen(3000, () => {
-  console.log('Сервер слушает порт 3000');
+// Создаем HTTP сервер
+const server = http.createServer((req, res) => {
+  res.writeHead(200, { 'Content-Type': 'text/plain' });
+  res.end('WebSocket Server is running');
 });
 
-// WebSocket сервер привязывается к серверу Express
-const socketServer = new WebSocket.Server({ noServer: true });
-server.on('upgrade', (request, socket, head) => {
-  socketServer.handleUpgrade(request, socket, head, (webSocket) => {
-    socketServer.emit('connection', webSocket, request);
-  });
+
+
+// Устанавливаем соединение с "wss://ws.dextools.io/"
+const dextoolsSocket = new WebSocket('wss://ws.dextools.io/');
+
+// Обработчик события при успешном открытии соединения с "wss://ws.dextools.io/"
+dextoolsSocket.on('open', () => {
+  console.log('Соединение с "wss://ws.dextools.io/" установлено.');
 });
 
-// Событие открытия соединения
-socketServer.on('connection', (webSocket) => {
-  console.log('Соединение установлено.');
-
-  // Отправляем данные после открытия соединения (если необходимо)
-  // webSocket.send('Hello, WebSocket!');
-
-  // Событие при получении данных
-  webSocket.on('message', (data) => {
-    console.log('Получены данные:', data);
-  });
-
-  // Событие закрытия соединения
-  webSocket.on('close', (code, reason) => {
-    console.log(`Соединение закрыто: код ${code}, причина ${reason}`);
-  });
-
-  // Событие ошибки
-  webSocket.on('error', (error) => {
-    console.error('Ошибка:', error.message);
-  });
+// Запускаем HTTP сервер на порту 3000
+server.listen(3000, () => {
+  console.log('Сервер запущен на порту 3000');
 });
