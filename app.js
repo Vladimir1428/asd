@@ -1,6 +1,6 @@
 const WebSocket = require('ws');
 
-const ws = new WebSocket('wss://ws.dextools.io/' {
+const ws = new WebSocket('wss://ws.dextools.io/',{
     origin: 'https://nodejsapp-ia4p.onrender.com' // Укажите свой домен вместо https://your-origin.com
   });
 
